@@ -4,18 +4,18 @@ const util = require('../util');
 
 module.exports = {
 	validate(client, message) {
-		if (!message.member.roles.exists('id', '730915935900139531')) {
+		if (!message.member.roles.exists('id', '733278948888412222')) {
 			throw new Error('no_permission');
 		}
 	},
 	run(client, message, args) {
 		// TODO: verificar o que fazer com possivel erro
 
-		const mensg = args.slice(1).join(' ');
-    const imageUrl = args[0];
-    
-    console.log(mensg, imageUrl)
-
+		const mensg = args.slice(2).join(' ');
+		const imageUrl = args[0];
+		const mention = args[1]
+		
+		console.log(util.getYear())
 		if (!mensg) return null;
 		if (!imageUrl) return null;
 
@@ -30,7 +30,7 @@ module.exports = {
 			)
 			.setTimestamp();
 
-		return message.channel.send('@everyone', announceImage);
+		return message.channel.send(mention, announceImage);
 	},
 
 	get command() {
@@ -38,7 +38,7 @@ module.exports = {
 			name: 'anunciar-img',
 			category: categories.MOD,
 			description: 'O usuario irá anunciar com imagem.',
-			usage: 'anunciar-img <url_image> <texto>',
+			usage: 'anunciar-img <url_image> <Mentions> <texto>',
 		};
 	},
 };

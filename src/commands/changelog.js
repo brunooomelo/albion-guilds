@@ -16,7 +16,7 @@ module.exports = {
 		const logs = new Discord.RichEmbed()
 			.addField(`:white_small_square: **${data}** **${hora}**`, `${texto}`)
 			.setColor('#ffffff');
-		return client.channels.get('732627594717167826').send(logs);
+		return client.channels.get('733281602632679524').send(logs);
 	},
 
 	get command() {

@@ -38,7 +38,7 @@ const init = async () => {
 	});
 
 	client.on('error', err => console.error('[#ERROR]', err));
-
+	
 	client.login(process.env.TOKEN);
 };
 init();

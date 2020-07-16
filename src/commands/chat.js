@@ -3,11 +3,10 @@ const categories = require('../userCategory');
 module.exports = {
 	async run(client, message, [state]) {
 		const SEND_MESSAGES = state === 'on';
-
 		await message.channel.overwritePermissions(
 			client.guilds
 				.get(process.env.GUILD_ID)
-				.roles.find('id', '732611256766300212'),
+				.roles.find('id', '715079384972918795'),
 			{ SEND_MESSAGES }
 		);
 		if (SEND_MESSAGES) {

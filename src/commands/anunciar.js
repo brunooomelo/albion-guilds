@@ -11,7 +11,12 @@ module.exports = {
 	run: (client, message, args) => {
 		// TODO: verificar o que fazer com possivel erro
 
-		const mensg = args.slice(0).join(' ');
+		const mensg = args.slice(1).join(' ');
+		const mention = args[0]
+		if (!mention) {
+			throw new Error('invalid_syntax');
+		}
+
 		if (!mensg) return null;
 
 		const announce = new Discord.RichEmbed()
@@ -24,7 +29,7 @@ module.exports = {
 			)
 			.setTimestamp();
 
-		return message.channel.send('@everyone', announce);
+		return message.channel.send(mention, announce);
 	},
 
 	get command() {
@@ -32,7 +37,7 @@ module.exports = {
 			name: 'anunciar',
 			category: categories.MOD,
 			description: 'O usuario irá anunciar.',
-			usage: 'anunciar',
+			usage: 'anunciar <TAG> <mensagem>',
 		};
 	},
 };

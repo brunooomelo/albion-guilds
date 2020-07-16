@@ -1,22 +1,31 @@
 {
 	"continuar": {
 		"name": {
-			"title": "> **Uma pergunta"
+			"title": "> **qual seu nome"
 		},
 		"nick": {
-			"title": "> **Uma pergunta"
+			"title": "> **Qual seu nick no jogo"
 		},
-		"about": {
-			"title": "> **Uma pergunta"
+		"age": {
+			"title": "> **Qual é a sua idade"
 		},
-		"git": {
-			"title": "> **Uma pergunta"
+		"objective": {
+			"title": "> **Objetivo principal"
 		},
-		"languages": {
-			"title": "> **Uma pergunta** (Reaja para adquirir seu cargo e prosseguir)"
+		"guild": {
+			"title": "> **Guild Anterior *"
+		},
+		"weapon" : {
+			"title": "> **Arma com maior especialização "
+		},
+		"set": {
+			"Title": "> **Set Com maior especialização"
 		},
 		"english": {
-			"title": "> **Uma pergunta?**"
+			"title": "> **Qual seu nivel de Inglês?**"
+		},
+		"horario": {
+			"title": "> **Horário disponível *"	
 		}
 	},
 	"tempban": {
@@ -57,6 +66,11 @@
 			"no_permission": {
 				"description": "``❌`` Você não possui permissão para utilizar este comando. ``[MANAGE_GUILD]``"
 			}
+		},
+		"invalid_syntax": {
+			"title": "``📌`` » !anunciar",
+			"description": "Para anunciar utilize:\n- ``!anunciar <@usuário> <mensagem>``.",
+			"color": "#ff1919"
 		}
 	},
 	"ban": {

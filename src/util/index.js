@@ -30,7 +30,6 @@ module.exports = {
     return new Discord.RichEmbed(data);
   },
   getYear: () => {
-		current_date = new Date();
-		return current_date.getYear();
+		return new Date().getFullYear();
 	},
 }

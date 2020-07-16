@@ -24,7 +24,7 @@ module.exports = {
         }
       });
     } catch (error) {
-      console.log('deu erro')
+      console.log('deu erro', error)
       return
     }
 	

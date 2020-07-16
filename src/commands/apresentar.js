@@ -5,7 +5,7 @@ module.exports = {
 	validate(client, message) {
 		const presentedRole = client.guilds
 			.get(process.env.GUILD_ID)
-			.roles.find(role => role.name === '🎓 Apresentou');
+			.roles.find(role => role.name === 'Jonh');
 		if (message.channel.type === 'dm') {
 			throw new Error('direct');
 		}
