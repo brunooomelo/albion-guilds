@@ -22,14 +22,13 @@ module.exports = {
 			.addField('``👮`` **Punido por:**', message.author, true)
 			.addField('``📄`` **Tipo:**', 'BlackList', true)
 			.addField('``📣`` **Motivo:**', reason, true)
-			.setThumbnail(member.user.avatarURL)
+			.setThumbnail()
 			.setColor('#8146DC')
 			.setFooter(
-				util.getYear() + ' © PvP School',
-				''
+				util.getYear() + ' © PvP School - ' + message.author.username,
 			)
 			.setTimestamp();
-
+			
 		message.channel
 			.send('``✅`` Player adicionado na BlackList')
 			.then(msg => msg.delete(8000));
@@ -47,7 +46,7 @@ module.exports = {
 			name: 'blacklist',
 			category: categories.MOD,
 			description: 'Irá mostrar o avatar de um usuario.',
-			usage: 'blacklist'0,
+			usage: 'blacklist',
 		};
 	},
 };
