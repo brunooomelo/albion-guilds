@@ -151,6 +151,13 @@
 			"color": "#8146DC"
 		}
 	},
+	"move-all": {
+		"fail": {
+			"no_have_channel": {
+				"description": "``❌`` Você não possui esse Channel no seu **DISCORD."
+			}
+		}
+	},
 	"perfil": {
 		"answer": {
 			"title": "``👥`` » !profile",
