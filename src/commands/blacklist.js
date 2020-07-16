@@ -7,8 +7,7 @@ module.exports = {
 		if (!message.member.hasPermission('BAN_MEMBERS')) {
 			throw new Error('no_permission');
 		}
-		const member = message.mentions.members.first();
-		if (!member || args.length < 2) {
+		if (args.length < 2) {
 			throw new Error('invalid_syntax');
 		}
 	},
@@ -28,7 +27,7 @@ module.exports = {
 				util.getYear() + ' © PvP School - ' + message.author.username,
 			)
 			.setTimestamp();
-			
+
 		message.channel
 			.send('``✅`` Player adicionado na BlackList')
 			.then(msg => msg.delete(8000));
