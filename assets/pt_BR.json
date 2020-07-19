@@ -1,31 +1,34 @@
 {
 	"continuar": {
 		"name": {
-			"title": "> **qual seu nome"
+			"title": "> **qual seu nome** "
 		},
 		"nick": {
-			"title": "> **Qual seu nick no jogo"
+			"title": "> **Qual seu nick no jogo**"
 		},
 		"age": {
-			"title": "> **Qual é a sua idade"
+			"title": "> **Qual é a sua idade**"
 		},
 		"objective": {
-			"title": "> **Objetivo principal"
+			"title": "> **Objetivo principal**"
 		},
 		"guild": {
-			"title": "> **Guild Anterior *"
+			"title": "> **Guild Anterior **"
 		},
 		"weapon" : {
-			"title": "> **Arma com maior especialização "
+			"title": "> **Arma com maior especialização** "
 		},
 		"set": {
-			"Title": "> **Set Com maior especialização"
+			"title": "> **Set Com maior especialização**"
 		},
 		"english": {
 			"title": "> **Qual seu nivel de Inglês?**"
 		},
 		"horario": {
-			"title": "> **Horário disponível *"	
+			"title": "> **Horário disponível**"	
+		},
+		"funcao": {
+			"title": "> ** Escolha sua função** \n\n Selecione quantas quiser"
 		}
 	},
 	"tempban": {

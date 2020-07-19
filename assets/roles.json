@@ -1,54 +1,41 @@
 {
-  "dev_roles" : [
+  "categories_roles" : [
       {
           "name": "DPS",
           "emoji": "1⃣",
-          "id": "730915983299969146",
+          "id": "734305672958836740",
           "react": ":one:"
       },
       {
           "name": "HEALER",
           "emoji": "2⃣",
-          "id": "730915983299969146",
+          "id": "734305723177238657",
           "react": ":two:"
       },
       {
-          "name": "DAGGER",
-          "emoji": "3⃣",
-          "id": "730915983299969146",
-          "react": ":three:"
-
+        "name": "SUPORTE",
+        "emoji": "3⃣",
+        "id": "734305821919543357",
+        "react": ":three:"
       },
       {
-          "name": "ALGO",
-          "emoji": "4⃣",
-          "id": "730915983299969146",
-          "react": ":four:"
+        "name": "TANK",
+        "emoji": "4⃣",
+        "id": "734305774431502437",
+        "react": ":four:"
       },
       {
-          "name": "ALGO",
-          "emoji": "5⃣",
-          "id": "730915983299969146",
-          "react": ":five:"
-      },
-      {
-          "name": "ALGO",
-          "emoji": "6⃣",
-          "id": "730915983299969146",
-          "react": ":six:"
-      },
-      {
-          "name": "ALGO",
-          "emoji": "7⃣",
-          "id": "730915983299969146",
-          "react": ":seven:"
+        "name": "COLETOR",
+        "emoji": "5⃣",
+        "id": "734305871814852608",
+        "react": ":five:"
       }
   ],
   "eng_roles" : [
       {
           "name" : "Básico",
           "react" : "🇦",
-          "id" : "730916066988916886"
+          "id" : "734311303178354720"
       },
       {
           "name" : "Intermediário",
@@ -58,7 +45,7 @@
       {
           "name" : "Avançado",
           "react" : "🇨",
-          "id" : "730916066988916886"
+          "id" : "734311395889250334"
       }
   ]
 }

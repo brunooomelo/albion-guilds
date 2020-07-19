@@ -15,7 +15,6 @@ module.exports = {
 		const imageUrl = args[0];
 		const mention = args[1]
 		
-		console.log(util.getYear())
 		if (!mensg) return null;
 		if (!imageUrl) return null;
 
@@ -25,8 +24,7 @@ module.exports = {
 			.setImage(imageUrl)
 			.setColor('#8146DC')
 			.setFooter(
-				`${util.getYear()} © PvP School`,
-				''
+				`${util.getYear()} © PvP School`
 			)
 			.setTimestamp();
 

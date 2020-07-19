@@ -7,66 +7,66 @@ const langPTBR = require('../../assets/pt_BR');
 
 const TIMEOUT = 60 * 1000;
 
-const hiddenRolesDev = [
-	'540994118634176512',
-	'540994295541399552',
-	'540995072246939648',
-	'540995379538165774',
-	'540995627559944207',
-	'541021498064896000',
-	'540993488410378281',
-	'546152565633449995',
+const RolesCategory = [
+	'734305672958836740',
+	'734305723177238657',
+	'734305774431502437',
+	'734305821919543357',
+	'734305871814852608',
 ];
 
-const hiddenRolesEng = [
-	'546148712833875985',
-	'546148711416332298',
-	'546148708077666315',
+const RolesEng = [
+	'734311303178354720',
+	'734311372216729711',
+	'734311395889250334',
 ];
 
 const englishDescription = roles.eng_roles
 	.map(engRole => `${engRole.react}  -  ${engRole.name}`)
 	.join('\n');
-const languagesDescriptionLine = roles.dev_roles
+
+const categoryDescriptionLines = roles.categories_roles
 	.map(devRole => `${devRole.react}  -  ${devRole.name}`)
 	.join('\n');
-const languagesDescription = `${languagesDescriptionLine}\n\n\n✅ - Pronto.`;
+
+const categoryDescription = `${categoryDescriptionLines}\n\n\n✅ - Pronto.`;
 
 const createEmbedResponse = ({ author, collectors, client }) =>
 	new Discord.RichEmbed()
-		.setTitle(`**Title** » ${author.username}`)
+		.setTitle(`**Nome do Discord** » ${author.username}`)
 		.setThumbnail(author.avatarURL)
 		.setColor('#8146DC')
-		.addField('**Title:**', collectors.about.collected.first().content)
-		.addField('**Title:**', collectors.name.collected.first().content, true)
+		.addField('**Nome:**', collectors.name.collected.first().content, true)
 		.addField(
-			'**Title:**',
-			collectors.nick.collected.first().content,
-			true
+			'**Idade:**',
+			collectors.age.collected.first().content,
 		)
-		.addField('**Title:**', collectors.git.collected.first().content, true)
+		.addField('**Objetivo:**', collectors.objective.collected.first().content, true)
+		.addField('**Ultima Guild:**', collectors.guild.collected.first().content, true)
+		.addField('**Set de Weapon:**', collectors.set.collected.first().content, true)
+		.addField('**Horario:**', collectors.horario.collected.first().content, true)
 		.addField(
-			'**Title:**',
+			'**Set de Weapon:**',
 			client.guilds
 				.get(process.env.GUILD_ID)
 				.members.get(author.id)
-				.roles.filter(role => hiddenRolesDev.includes(role.id))
+				.roles.filter(role => RolesCategory.includes(role.id))
 				.map(role => `<@&${role.id}>`)
 				.join(', ') || '`Nenhuma`',
 			true
 		)
 		.addField(
-			'**Title:**',
+			'**English:**',
 			client.guilds
 				.get(process.env.GUILD_ID)
 				.members.get(author.id)
-				.roles.filter(role => hiddenRolesEng.includes(role.id))
+				.roles.filter(role => RolesEng.includes(role.id))
 				.map(role => `<@&${role.id}>`)
 				.join(', ') || '`Nenhuma`',
 			true
 		)
 		.setFooter(
-			`Footer`
+			util.getYear() + ' © PvP School'
 		)
 		.setTimestamp();
 const isAuthor = (message, author) => message.author.id === author.id;
@@ -93,26 +93,23 @@ const collectMessage = message => {
 	return collect(collector).then(() => collector);
 };
 
-const sendLanguageMessage = async author => {
+const sendCategoryMessage = async author => {
 	const message = await author.send(
-		`${langPTBR.continuar.languages.title}\n\n${languagesDescription}`
+		`${langPTBR.continuar.funcao.title}\n\n${categoryDescription}`
 	);
-
-	await message.react('1⃣');
-	await message.react('2⃣');
-	await message.react('3⃣');
-	await message.react('4⃣');
-	await message.react('5⃣');
-	await message.react('6⃣');
-	await message.react('7⃣');
-	await message.react('✅');
+	await message.react('1⃣')
+	await message.react('2⃣')
+	await message.react('3⃣')
+	await message.react('4⃣')
+	await message.react('5⃣')
+	await message.react('✅')
 	return message;
 };
-const collectLanguagesReactions = async ({
+const collectCategoryReactions = async ({
 	author,
-	message, // message with languages reactions
+	message,
 	client,
-	devRoles,
+	categoriesRoles,
 }) => {
 	const collector = message.createReactionCollector(
 		(reaction, user) => isAuthor({ author }, user),
@@ -125,15 +122,17 @@ const collectLanguagesReactions = async ({
 		}
 
 		const emoji = reaction.emoji.name;
-		const selectedRole = devRoles.find(role => role.emoji === emoji);
+		const selectedRole = categoriesRoles.find(role => role.emoji === emoji);
 		if (!selectedRole) {
 			return;
 		}
+
 		await client.guilds
 			.get(process.env.GUILD_ID)
 			.members.get(author.id)
-			.addRole(selectedRole.id);
-		await author.send('``✅`` Linguagem adicionada com sucesso!');
+			.addRole(selectedRole.id)
+			.then(() => author.send('``✅`` TAG '+ `**${selectedRole.name}**`  +' adicionada com sucesso!'))
+		 
 	});
 	return collect(collector).then(() => collector);
 };
@@ -143,9 +142,10 @@ const sendEnglishMessage = async author => {
 		`${langPTBR.continuar.english.title}\n\n${englishDescription}`
 	);
 
-	await message.react('🇦');
-	await message.react('🇧');
-	await message.react('🇨');
+	await	message.react('🇦'),
+	await	message.react('🇧'),
+	await	message.react('🇨')
+
 	return message;
 };
 const collectEnglishReactions = async ({
@@ -179,13 +179,14 @@ module.exports = {
 			throw new Error('cooldown');
 		}
 		cooldown[message.author.id] = true;
-		const devRoles = roles.dev_roles;
+		const categoriesRoles = roles.categories_roles;
 		const engRoles = roles.eng_roles;
 		const collectors = {};
 
 		const presentedRole = client.guilds
 			.get(process.env.GUILD_ID)
-			.roles.find(role => role.name === '🎓 Apresentou');
+			.roles
+			.find(role => role.name === 'Apresentar');
 
 		if (
 			client.guilds
@@ -202,12 +203,36 @@ module.exports = {
 		await message.author.send(langPTBR.continuar.nick.title);
 		collectors.nick = await collectMessage(message);
 
-		await message.author.send(langPTBR.continuar.about.title);
-		collectors.about = await collectMessage(message);
+		await message.author.send(langPTBR.continuar.age.title);
+		collectors.age = await collectMessage(message);
 
-		// TODO: validar git se tiver inferir em algum canto
-		await message.author.send(langPTBR.continuar.git.title);
-		collectors.git = await collectMessage(message);
+		await message.author.send(langPTBR.continuar.objective.title);
+		collectors.objective = await collectMessage(message);
+
+		await message.author.send(langPTBR.continuar.guild.title);
+		collectors.guild = await collectMessage(message);
+
+		await message.author.send(langPTBR.continuar.weapon.title);
+		collectors.weapon = await collectMessage(message);
+
+		await message.author.send(langPTBR.continuar.set.title);
+		collectors.set = await collectMessage(message);
+
+
+		await message.author.send(langPTBR.continuar.horario.title);
+		collectors.horario = await collectMessage(message);
+
+		// console.log({
+		// 	name: collectors.name.collected.first().content,
+		// 	nick: collectors.nick.collected.first().content,
+		// 	age: collectors.age.collected.first().content,
+		// 	objective: collectors.objective.collected.first().content,
+		// 	guild: collectors.guild.collected.first().content,
+		// 	weapon: collectors.weapon.collected.first().content,
+		// 	set: collectors.set.collected.first().content,
+		// 	english: collectors.english.collected.first().content,
+		// 	horario: collectors.horario.collected.first().content,
+		// })
 
 		// Socorro eu quero morrer pq sim
 		// client.axios.put(`/users/${message.author.id}`, {
@@ -217,12 +242,12 @@ module.exports = {
 		// 	about: collectors.about.collected.first().content,
 		// });
 
-		const languageMessage = await sendLanguageMessage(message.author);
-		await collectLanguagesReactions({
+		const categoryMessage = await sendCategoryMessage(message.author);
+		await collectCategoryReactions({
 			client,
 			author: message.author,
-			message: languageMessage,
-			devRoles,
+			message: categoryMessage,
+			categoriesRoles,
 		});
 
 		const englishMessage = await sendEnglishMessage(message.author);
@@ -238,15 +263,17 @@ module.exports = {
 			client,
 			author: message.author,
     });
-    
-		await client.guilds
-			.get(process.env.GUILD_ID)
-      .members
-      .get(message.author.id)
-      .addRole('732700791508303912');
+		
+		
+		// ADD ROLE DE JA APRESETOU
+		// await client.guilds
+		// 	.get(process.env.GUILD_ID)
+    //   .members
+    //   .get(message.author.id)
+    //   .addRole('732700791508303912');
       
 		await client.channels
-			.get('730800556808863822')
+			.get('724966214719373482')
 			.send(embedResponse);
 	},
 	async fail(err, client, message) {
@@ -295,10 +322,10 @@ module.exports = {
 	},
 	get command() {
 		return {
-			name: 'continuar',
+			name: 'registrar',
 			category: categories.USER,
 			description: 'O usuario irá continuar a apresentação.',
-			usage: 'continuar',
+			usage: 'registrar',
 		};
 	},
 };

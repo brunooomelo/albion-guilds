@@ -25,8 +25,7 @@ module.exports = {
 			.setThumbnail(member.user.avatarURL)
 			.setColor('#8146DC')
       .setFooter(
-				util.getYear() + ' © PvP School',
-				''
+				util.getYear() + ' © PvP School'
 			)
 			.setTimestamp();
 
