@@ -20,10 +20,7 @@ module.exports = {
           .then(msgn => msgn.delete(5000))
           .catch(err => console.log(err));
       }
-      message.channel.send(
-        'Enviando mensagem para todos os usuários...\n'
-      );
-
+      
       client.guilds.get(process.env.GUILD_ID).members.forEach(member => {
         if(member.roles.has(role.id)) {
           if (!member.user.bot) {
@@ -31,6 +28,11 @@ module.exports = {
           }
         }
       });
+
+      message.channel.send(
+        'Enviando mensagem para todos os usuários...\n'
+      );
+
     } catch (error) {
       console.log('deu erro', error)
       return
