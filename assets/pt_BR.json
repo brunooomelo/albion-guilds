@@ -112,6 +112,13 @@
 			}
 		}
 	},
+	"say-all": {
+		"fail": {
+			"no_mentions": {
+				"description": "``❌`` Você precisa mencionar uma role"
+			}
+		}
+	},
 	"chat": {
 		"fail": {
 			"no_permission": {

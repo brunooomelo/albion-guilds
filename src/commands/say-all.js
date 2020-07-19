@@ -4,11 +4,16 @@ module.exports = {
 	validate(client, message) {
 		if (!message.member.hasPermission('MANAGE_GUILD')) {
 			throw new Error('no_permission');
-		}
+    }
+    if (!message.mentions.roles.first()) {
+      throw new Error('no_mentions');
+    }
 	},
 	async run(client, message, args) {
     try {
-      const msg = args.slice(0).join(' ');
+      const msg = args.slice(1).join(' ');
+      const role = message.mentions.roles.first();
+
       if (!msg) {
         return message
           .reply(':x: Voce deve informar uma mensagem')
@@ -18,16 +23,18 @@ module.exports = {
       message.channel.send(
         'Enviando mensagem para todos os usuários...\n'
       );
+
       client.guilds.get(process.env.GUILD_ID).members.forEach(member => {
-        if (!member.user.bot) {
-          member.send(msg)
+        if(member.roles.has(role.id)) {
+          if (!member.user.bot) {
+            member.send(msg)
+          }
         }
       });
     } catch (error) {
       console.log('deu erro', error)
       return
     }
-	
 	},
 
 	get command() {
