@@ -175,8 +175,7 @@ module.exports = {
 
 		const presentedRole = client.guilds
 			.get(process.env.GUILD_ID)
-			.roles
-			.find(role => role.name === 'Apresentar');
+			.roles.get(process.env.APRESENTOU);
 
 		if (
 			client.guilds
@@ -252,11 +251,11 @@ module.exports = {
 		
 		
 		// ADD ROLE DE JA APRESETOU
-		// await client.guilds
-		// 	.get(process.env.GUILD_ID)
-    //   .members
-    //   .get(message.author.id)
-    //   .addRole('732700791508303912');
+		await client.guilds
+			.get(process.env.GUILD_ID)
+      .members
+      .get(message.author.id)
+      .addRole(process.env.APRESENTOU);
 	},
 	async fail(err, client, message) {
 		if (err.message === 'cooldown') {
