@@ -227,7 +227,7 @@ module.exports = {
 			engRoles,
 		});
 
-		await createPlayer({
+		createPlayer({
 			discord: {
 				id: message.author.id,
 				discriminator: message.author.discriminator,
