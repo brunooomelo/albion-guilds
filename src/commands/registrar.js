@@ -1,25 +1,15 @@
 const { promisify } = require('util');
 const Discord = require('discord.js');
 const util = require('../util');
-const roles = require('../../assets/roles.json');
+const roles = require('../../assets/roles.js');
 const categories = require('../userCategory');
 const langPTBR = require('../../assets/pt_BR');
+const createPlayer = require('../api/services/createPlayer');
 
 const TIMEOUT = 60 * 1000;
 
-const RolesCategory = [
-	'734305672958836740',
-	'734305723177238657',
-	'734305774431502437',
-	'734305821919543357',
-	'734305871814852608',
-];
-
-const RolesEng = [
-	'734311303178354720',
-	'734311372216729711',
-	'734311395889250334',
-];
+const RolesCategory = roles.categories_roles.map(cr => cr.id)
+const RolesEng = roles.eng_roles.map(en => en.id)
 
 const englishDescription = roles.eng_roles
 	.map(engRole => `${engRole.react}  -  ${engRole.name}`)
@@ -222,26 +212,6 @@ module.exports = {
 		await message.author.send(langPTBR.continuar.horario.title);
 		collectors.horario = await collectMessage(message);
 
-		// console.log({
-		// 	name: collectors.name.collected.first().content,
-		// 	nick: collectors.nick.collected.first().content,
-		// 	age: collectors.age.collected.first().content,
-		// 	objective: collectors.objective.collected.first().content,
-		// 	guild: collectors.guild.collected.first().content,
-		// 	weapon: collectors.weapon.collected.first().content,
-		// 	set: collectors.set.collected.first().content,
-		// 	english: collectors.english.collected.first().content,
-		// 	horario: collectors.horario.collected.first().content,
-		// })
-
-		// Socorro eu quero morrer pq sim
-		// client.axios.put(`/users/${message.author.id}`, {
-		// 	name: collectors.name.collected.first().content,
-		// 	nickname: collectors.nick.collected.first().content,
-		// 	git: collectors.git.collected.first().content,
-		// 	about: collectors.about.collected.first().content,
-		// });
-
 		const categoryMessage = await sendCategoryMessage(message.author);
 		await collectCategoryReactions({
 			client,
@@ -258,11 +228,27 @@ module.exports = {
 			engRoles,
 		});
 
-		const embedResponse = createEmbedResponse({
-			collectors,
-			client,
-			author: message.author,
-    });
+		await createPlayer({
+			discord: {
+				id: message.author.id,
+				discriminator: message.author.discriminator,
+				username: message.author.username
+			},
+			name: collectors.name.collected.first().content,
+			nick: collectors.nick.collected.first().content,
+			age: collectors.age.collected.first().content,
+			objective: collectors.objective.collected.first().content,
+			guild: collectors.guild.collected.first().content,
+			weapon: collectors.weapon.collected.first().content,
+			sets: collectors.set.collected.first().content,
+			horario: collectors.horario.collected.first().content,
+		})
+
+		// const embedResponse = createEmbedResponse({
+		// 	collectors,
+		// 	client,
+		// 	author: message.author,
+    // });
 		
 		
 		// ADD ROLE DE JA APRESETOU
@@ -271,10 +257,6 @@ module.exports = {
     //   .members
     //   .get(message.author.id)
     //   .addRole('732700791508303912');
-      
-		await client.channels
-			.get('724966214719373482')
-			.send(embedResponse);
 	},
 	async fail(err, client, message) {
 		if (err.message === 'cooldown') {

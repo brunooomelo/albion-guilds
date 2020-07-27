@@ -6,8 +6,8 @@ const runCommand = async (client, message) => {
 		message.channel.id === process.env.SUGGESTION_CHAT ||
 		message.channel.id === process.env.SEARCH_CHAT
 	) {
-		message.react('✅');
-		message.react('❌');
+		await message.react('✅');
+		await message.react('❌');
 	}
 
 	if (!util.isCommand(message)) return;
@@ -23,6 +23,10 @@ const runCommand = async (client, message) => {
 	//   message.delete().catch(() => {});
 	//   return message.channel.send("``❌`` Use comandos no canal <#542840741588762637>.").then(msg => msg.delete(15000));
 	// }
+	if (message.channel.type == "dm") {
+		message.delete().catch(() => {});
+		return message.channel.send("``❌`` Use comandos no canal de comandos").then(msg => msg.delete(15000));
+	}
 	if (!cmd) return;
 
 	message.delete().catch(() => {});
