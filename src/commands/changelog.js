@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const moment = require('moment');
+const moment = require('moment-timezone')
 const categories = require('../userCategory');
 
 moment.tz('America/Sao_Paulo')
