@@ -2,6 +2,8 @@ const Discord = require('discord.js');
 const moment = require('moment');
 const categories = require('../userCategory');
 
+moment.tz('America/Sao_Paulo')
+
 module.exports = {
 	async run(client, message, args) {
 		if (!message.member.hasPermission('MANAGE_GUILD')) {
@@ -16,7 +18,7 @@ module.exports = {
 		const logs = new Discord.RichEmbed()
 			.addField(`:white_small_square: **${data}** **${hora}**`, `${texto}`)
 			.setColor('#ffffff');
-		return client.channels.get('733281602632679524').send(logs);
+		return client.channels.get(process.env.CHANGELOG_CHAT).send(logs);
 	},
 
 	get command() {

@@ -23,7 +23,7 @@ const runCommand = async (client, message) => {
 	//   message.delete().catch(() => {});
 	//   return message.channel.send("``❌`` Use comandos no canal <#542840741588762637>.").then(msg => msg.delete(15000));
 	// }
-	if (message.channel.type == "dm") {
+	if (message.channel.type == "dm" || command !== 'registrar') {
 		message.delete().catch(() => {});
 		return message.channel.send("``❌`` Use comandos no canal de comandos").then(msg => msg.delete(15000));
 	}

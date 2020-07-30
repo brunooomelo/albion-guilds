@@ -255,7 +255,7 @@ module.exports = {
 			.get(process.env.GUILD_ID)
       .members
       .get(message.author.id)
-      .addRole(process.env.APRESENTOU);
+      .addRole(process.env.APRESENTOU)
 	},
 	async fail(err, client, message) {
 		if (err.message === 'cooldown') {

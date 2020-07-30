@@ -31,9 +31,8 @@ module.exports = {
 			return am.setVoiceChannel(channel.id)
 		}))
 
-
 		message.channel
-			.send('``✅`` '+ mentions.nickname + ' movido para a sala '+ channel.name)
+			.send('``✅`` '+ mentions.username || mentions.nickname + ' movido para a sala '+ channel.name)
 			.then((mn) => mn.delete(8000))
 	},
 
