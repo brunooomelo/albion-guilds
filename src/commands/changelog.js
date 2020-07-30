@@ -1,8 +1,6 @@
 const Discord = require('discord.js');
-const moment = require('moment-timezone')
 const categories = require('../userCategory');
-
-moment.tz('America/Sao_Paulo')
+const { format } = require('date-fns')
 
 module.exports = {
 	async run(client, message, args) {
@@ -12,11 +10,10 @@ module.exports = {
 			);
 		}
 
-    const data = `${moment().format('L')}`;
-    const hora = `${moment().format('HH:MM')}`;
+		const ts = new Date()
 		const texto = args.slice(0).join(' ');
 		const logs = new Discord.RichEmbed()
-			.addField(`:white_small_square: **${data}** **${hora}**`, `${texto}`)
+			.addField(`:white_small_square: **${format(ts, 'd/LL/y')}** **${format(ts, 'k:m')}**`, `${texto}`)
 			.setColor('#ffffff');
 		return client.channels.get(process.env.CHANGELOG_CHAT).send(logs);
 	},
