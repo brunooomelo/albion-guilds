@@ -4,7 +4,7 @@ const util = require('../util');
 
 module.exports = {
 	validate(client, message) {
-		if (!message.member.roles.exists('id', '733278948888412222')) {
+		if (!util.verifyPermission(message.member.roles, message.guild.id)) {
 			throw new Error('no_permission');
 		}
 	},
@@ -19,12 +19,12 @@ module.exports = {
 		if (!imageUrl) return null;
 
 		const announceImage = new Discord.RichEmbed()
-			.setTitle('``🔔`` **PvP School informa:**')
+			.setTitle('``🔔`` **'+ message.guild.name +' informa:**')
 			.setDescription(mensg)
 			.setImage(imageUrl)
 			.setColor('#8146DC')
 			.setFooter(
-				`${util.getYear()} © PvP School`
+				`${util.getYear()} © ${message.guild.name}`
 			)
 			.setTimestamp();
 

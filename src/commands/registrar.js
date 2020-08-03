@@ -6,7 +6,7 @@ const categories = require('../userCategory');
 const langPTBR = require('../../assets/pt_BR');
 const createPlayer = require('../api/services/createPlayer');
 
-const TIMEOUT = 60 * 1000;
+const TIMEOUT = 60 * 2000;
 
 const RolesCategory = roles.categories_roles.map(cr => cr.id)
 const RolesEng = roles.eng_roles.map(en => en.id)
@@ -38,7 +38,7 @@ const createEmbedResponse = ({ author, collectors, client }) =>
 		.addField(
 			'**Set de Weapon:**',
 			client.guilds
-				.get(process.env.GUILD_ID)
+				.get(message.guild.id)
 				.members.get(author.id)
 				.roles.filter(role => RolesCategory.includes(role.id))
 				.map(role => `<@&${role.id}>`)
@@ -48,7 +48,7 @@ const createEmbedResponse = ({ author, collectors, client }) =>
 		.addField(
 			'**English:**',
 			client.guilds
-				.get(process.env.GUILD_ID)
+				.get(message.guild.id)
 				.members.get(author.id)
 				.roles.filter(role => RolesEng.includes(role.id))
 				.map(role => `<@&${role.id}>`)
@@ -118,7 +118,7 @@ const collectCategoryReactions = async ({
 		}
 
 		await client.guilds
-			.get(process.env.GUILD_ID)
+			.get(message.guild.id)
 			.members.get(author.id)
 			.addRole(selectedRole.id)
 			.then(() => author.send('``✅`` TAG '+ `**${selectedRole.name}**`  +' adicionada com sucesso!'))
@@ -155,7 +155,7 @@ const collectEnglishReactions = async ({
 			return;
 		}
 		await client.guilds
-			.get(process.env.GUILD_ID)
+			.get(message.guild.id)
 			.members.get(author.id)
 			.addRole(engRole.id);
 		collector.stop();
@@ -174,12 +174,12 @@ module.exports = {
 		const collectors = {};
 
 		const presentedRole = client.guilds
-			.get(process.env.GUILD_ID)
+			.get(message.guild.id)
 			.roles.get(process.env.APRESENTOU);
 
 		if (
 			client.guilds
-				.get(process.env.GUILD_ID)
+				.get(message.guild.id)
 				.members.get(message.author.id)
 				.roles.some(role => role.name === presentedRole.name)
 		) {
@@ -233,6 +233,7 @@ module.exports = {
 				discriminator: message.author.discriminator,
 				username: message.author.username
 			},
+			guild: message.guild.id,
 			name: collectors.name.collected.first().content,
 			nick: collectors.nick.collected.first().content,
 			age: collectors.age.collected.first().content,
@@ -252,7 +253,7 @@ module.exports = {
 		
 		// ADD ROLE DE JA APRESETOU
 		await client.guilds
-			.get(process.env.GUILD_ID)
+			.get(message.guild.id)
       .members
       .get(message.author.id)
       .addRole(process.env.APRESENTOU)
@@ -286,7 +287,7 @@ module.exports = {
 			const timeout = new Discord.RichEmbed()
 				.setTitle('``❌`` **Tempo limite de resposta excedido.**')
 				.setDescription(
-					'Utilize `!continuar` para terminar sua apresentação.'
+					'Utilize `!registrar` para terminar sua apresentação.'
 				)
 				.setColor('#36393E');
 			return message.author.send(timeout);

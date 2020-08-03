@@ -1,10 +1,11 @@
 const Discord = require('discord.js');
 const categories = require('../userCategory');
 const { format } = require('date-fns');
+const { verifyPermission } = require('../util/index');
 
 module.exports = {
 	async run(client, message, args) {
-		if (!message.member.hasPermission('MANAGE_GUILD')) {
+		if (!verifyPermission(message.member.roles, message.guild.id)) {
 			return message.reply(
 				'Você não tem permissão para usar esse comando'
 			);

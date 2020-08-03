@@ -33,7 +33,7 @@ const runCommand = async (client, message) => {
 
 	console.log(
 		'[#LOG]',
-		`${message.author.username} (${message.author.id}) executou o comando: ${cmd.command.name}`
+		`${message.guild.name} (${message.guild.id}) :: ${message.author.username} (${message.author.id}) executou o comando: ${cmd.command.name}`
 	);
 	try {
 		if (cmd.validate) {

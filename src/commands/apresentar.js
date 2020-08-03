@@ -1,11 +1,13 @@
 const Discord = require('discord.js');
 const categories = require('../userCategory');
+const { cached }= require('../util/cache')
 
 module.exports = {
 	validate(client, message) {
 		const presentedRole = client.guilds
-			.get(process.env.GUILD_ID)
-			.roles.get(process.env.APRESENTOU);
+			.get(message.guild.id)
+			.roles
+			.get(cached.get(message.guild.id).environment.roles.apresentou)
 		if (message.channel.type === 'dm') {
 			throw new Error('direct');
 		}

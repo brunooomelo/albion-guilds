@@ -31,5 +31,9 @@ module.exports = {
   },
   getYear: () => {
 		return new Date().getFullYear();
-	},
+  },
+  verifyPermission: (permission, guildId) => {
+    const { environment } = cached.get(guildId)
+    return permission.get(environment.roles.permission)
+  }
 }

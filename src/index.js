@@ -3,6 +3,7 @@ const fs = require('fs-extra');
 const path = require('path')
 const Enmap = require('enmap');
 const database = require('./api/config/database');
+const { initialize } = require('./util/cache')
 
 const client = new Discord.Client({ forceFetchUsers: true });
 
@@ -45,6 +46,7 @@ const init = async () => {
 
 database()
 	.then(() => console.log('database connection success'))
+	.then(initialize)
 	.then(init)
 	.catch((error) => console.log('database deu erro', error.message))
 

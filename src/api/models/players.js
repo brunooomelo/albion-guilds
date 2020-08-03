@@ -36,6 +36,10 @@ const playerScheme = new mongoose.Schema({
   discord: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user_discords'
+  },
+  guild: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'guilds'
   }
 }, {
   timestamps: {
@@ -61,7 +65,7 @@ playerScheme.post('save', async function() {
           "text": "Data de entrada"
         },
         "author": {
-          "name": discord.username,
+          "name": `<@${discord.discordId}>`,
         },
         "fields": [
           {

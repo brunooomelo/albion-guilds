@@ -5,6 +5,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  guildId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'guilds'
+  },
   username: {
     type: String,
     default: ''
