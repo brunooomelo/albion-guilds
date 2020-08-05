@@ -1,12 +1,21 @@
 const categories = require('../userCategory');
+const { verifyPermission } = require('../util')
 
 module.exports = {
+	async validate(client, message, [state]) {
+		if (!verifyPermission(message.member.roles, message.guild.id)) {
+			throw new Error('no_permission');
+		}
+		if (!state) {
+			throw new Error('no_state');
+		}
+	},
 	async run(client, message, [state]) {
 		const SEND_MESSAGES = state === 'on';
 		await message.channel.overwritePermissions(
 			client.guilds
-				.get(process.env.GUILD_ID)
-				.roles.find('id', '715079384972918795'),
+				.get(message.guild.id)
+				.roles.find('id', process.env.APRESENTOU),
 			{ SEND_MESSAGES }
 		);
 		if (SEND_MESSAGES) {
@@ -19,14 +28,6 @@ module.exports = {
 			await message.channel
 				.send('``✅`` Canal pausado com sucesso.')
 				.then(msg => msg.delete(8000));
-		}
-	},
-	async validate(client, message, [state]) {
-		if (!message.member.hasPermission('MANAGE_MESSAGES')) {
-			throw new Error('no_permission');
-		}
-		if (!state) {
-			throw new Error('no_state');
 		}
 	},
 	get command() {

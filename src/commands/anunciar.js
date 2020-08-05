@@ -4,7 +4,7 @@ const util = require('../util');
 
 module.exports = {
 	validate(client, message) {
-		if (!message.member.hasPermission('MANAGE_GUILD')) {
+		if (!util.verifyPermission(message.member.roles, message.guild.id)) {
 			throw new Error('no_permission');
 		}
 	},
@@ -17,14 +17,16 @@ module.exports = {
 			throw new Error('invalid_syntax');
 		}
 
-		if (!mensg) return null;
+		if (!mensg) {
+			throw new Error('invalid_syntax');
+		}
 
 		const announce = new Discord.RichEmbed()
-			.setTitle('``🔔`` **PvP School informa:**')
+			.setTitle('``🔔`` **'+ message.guild.name +' informa:**')
 			.setDescription(mensg)
 			.setColor('#8146DC')
 			.setFooter(
-				util.getYear() + ' © PvP School',
+				util.getYear() +  `© ${message.guild.name}`,
 				''
 			)
 			.setTimestamp();

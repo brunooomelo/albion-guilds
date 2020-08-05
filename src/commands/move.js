@@ -1,16 +1,15 @@
 const categories = require('../userCategory');
+const { verifyPermission } = require('../util')
 
 module.exports = {
 	validate(client, message) {
-		if (!message.member.hasPermission('MANAGE_GUILD')) {
+		if (!verifyPermission(message.member.roles, message.guild.id)) {
 			throw new Error('no_permission');
 		}
 	},
 	async run(client, message) {
-		const user = client.guilds.get(process.env.GUILD_ID).members.get(message.author.id)
-		const channel = client.guilds.get(process.env.GUILD_ID).channels.find((cn) => {
-			return (cn.id === user.voiceChannelID)
-		})
+		const user = client.guilds.get(message.guild.id).members.get(message.author.id)
+		const channel = client.guilds.get(message.guild.id).channels.find((cn) => (cn.id === user.voiceChannelID))
 
 		const mentions = message.mentions.members.first()
 		if (!mentions)  {
@@ -23,7 +22,7 @@ module.exports = {
 			throw new Error('no_have_channel')
 		}
 
-		const allmembers = client.guilds.get(process.env.GUILD_ID).members.filter(m => {
+		const allmembers = client.guilds.get(message.guild.id).members.filter(m => {
 			return m.voiceChannelID && !m.user.bot && m.voiceChannelID !== process.env.AFK && m.voiceChannelID !== channel.id && m.id === mentions.id
 		})
 
@@ -42,6 +41,6 @@ module.exports = {
 			category: categories.ADM,
 			description: 'Manda mensagem pra todos os usuários',
 			usage: 'move <MENTIONS>',
-		};
+		}
 	},
-};
+}

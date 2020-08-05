@@ -7,7 +7,7 @@ module.exports = {
 		}
 	},
 	async run(client, message, args) {
-		const channel = client.guilds.get(process.env.GUILD_ID).channels.find((cn) => {
+		const channel = client.guilds.get(message.guild.id).channels.find((cn) => {
 			return (cn.id === args[0])
 		})
 
@@ -22,7 +22,7 @@ module.exports = {
 			})
 		}
 
-		const allmembers = client.guilds.get(process.env.GUILD_ID).members.filter(m => {
+		const allmembers = client.guilds.get(message.guild.id).members.filter(m => {
 			return m.voiceChannelID && !m.user.bot && m.voiceChannelID !== process.env.AFK && m.voiceChannelID !== channel.id && hasRole(mentions, m)
 		})
 

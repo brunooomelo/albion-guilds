@@ -21,7 +21,7 @@ module.exports = {
           .catch(err => console.log(err));
       }
       
-      client.guilds.get(process.env.GUILD_ID).members.forEach(member => {
+      client.guilds.get(message.guild.id).members.forEach(member => {
         if(member.roles.has(role.id)) {
           if (!member.user.bot) {
             member.send(msg)
