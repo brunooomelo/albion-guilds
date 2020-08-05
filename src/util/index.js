@@ -1,6 +1,7 @@
 const _ = require('lodash')
 const langPTBR = require('../../assets/pt_BR');
 const Discord = require('discord.js')
+const { cached } = require('./cache')
 
 module.exports = {
   isCommand: message =>
