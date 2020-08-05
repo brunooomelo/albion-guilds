@@ -174,12 +174,12 @@ module.exports = {
 		const collectors = {};
 
 		const presentedRole = client.guilds
-			.get(message.guild.id)
+			.get(process.env.GUILD_ID)
 			.roles.get(process.env.APRESENTOU);
 
 		if (
 			client.guilds
-				.get(message.guild.id)
+				.get(process.env.GUILD_ID)
 				.members.get(message.author.id)
 				.roles.some(role => role.name === presentedRole.name)
 		) {

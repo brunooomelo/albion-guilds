@@ -31,18 +31,10 @@ const runCommand = async (client, message) => {
 
 	message.delete().catch(() => {});
 
-
-	if (message.channel.type !== "dm") {
-		console.log(
-			'[#LOG]',
-			`${message.author.username} (${message.author.id}) executou o comando: ${cmd.command.name}`
-		);
-	} else {
-		console.log(
-			'[#LOG]',
-			`${message.guild.name} (${message.guild.id}) :: ${message.author.username} (${message.author.id}) executou o comando: ${cmd.command.name}`
-		);
-	}
+	console.log(
+		'[#LOG]',
+		`${message.author.username} (${message.author.id}) executou o comando: ${cmd.command.name}`
+	);
 
 	try {
 		if (cmd.validate) {
