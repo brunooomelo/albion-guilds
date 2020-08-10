@@ -18,6 +18,6 @@ const regSchema = new mongoose.Schema({
     createdAt: true,
     updatedAte: true
   }
-});
+})
 
 module.exports = mongoose.model('new_registers', regSchema)

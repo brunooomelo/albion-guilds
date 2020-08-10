@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 const UserDiscord = require('../models/user')
 const Player = require('../models/players')
 
@@ -14,9 +15,9 @@ const createPlayer = async (payload) => {
       guild: payload.guild
     })
   } else {
-    discordId.discriminator= payload.discord.discriminator,
-    discordId.age= payload.age,
-    discordId.fullName= payload.name
+    discordId.discriminator = payload.discord.discriminator
+    discordId.age = payload.age
+    discordId.fullName = payload.name
     discordId.username = payload.discord.username
     discordId.guild = payload.guild
     await discordId.save()
@@ -29,7 +30,7 @@ const createPlayer = async (payload) => {
     player.weapon = payload.weapon
     player.sets = payload.sets
     player.hours = payload.horario
-    player.discord = _discordId ? _discordId._id: discordId._id
+    player.discord = _discordId ? _discordId._id : discordId._id
     player.guild = payload.guild
     await player.save()
   } else {
@@ -40,12 +41,10 @@ const createPlayer = async (payload) => {
       weapon: payload.weapon,
       sets: payload.sets,
       hours: payload.horario,
-      discord: _discordId ? _discordId._id: discordId._id,
+      discord: _discordId ? _discordId._id : discordId._id,
       guild: payload.guild
     })
   }
 }
-
-
 
 module.exports = createPlayer

@@ -5,14 +5,14 @@ const Discord = require('../models/user')
 
 const playerScheme = new mongoose.Schema({
   name: {
-    type: String,
+    type: String
   },
   albionId: {
     type: String
   },
   totalFame: {
     type: String
-  }, 
+  },
   objective: {
     type: String,
     default: ''
@@ -48,52 +48,52 @@ const playerScheme = new mongoose.Schema({
   }
 })
 
-playerScheme.pre('save', async function() {
+playerScheme.pre('save', async function () {
   const player = await searchPlayer(this.name)
   this.totalFame = await searchFame(player.albionId)
   this.name = player.name
   this.albionId = player.albionId
 })
 
-playerScheme.post('save', async function() {
+playerScheme.post('save', async function () {
   const discord = await Discord.findById(this.discord)
   webhook.send({
     embeds: [{
-        "color": 8311585,
-        "timestamp": new Date(),
-        "footer": {
-          "text": "Data de entrada"
+      color: 8311585,
+      timestamp: new Date(),
+      footer: {
+        text: 'Data de entrada'
+      },
+      author: {
+        name: `<@${discord.discordId}>`
+      },
+      fields: [
+        {
+          name: 'Personagem: ',
+          value: this.name,
+          inline: true
         },
-        "author": {
-          "name": `<@${discord.discordId}>`,
+        {
+          name: 'TotalFame: ',
+          value: this.totalFame,
+          inline: false
         },
-        "fields": [
-          {
-            "name": "Personagem: ",
-            "value": this.name,
-            "inline": true
-          },
-          {
-            "name": "TotalFame: ",
-            "value": this.totalFame,
-            "inline": false
-          },
-          {
-            "name": "Ultima Guild: ",
-            "value": this.lastGuild,
-            "inline": true
-          },
-          {
-            "name": "Maior Set (specado): ",
-            "value": this.sets,
-            "inline": true
-          },
-          {
-            "name": "Maior Arma (specado): ",
-            "value": this.weapon,
-            "inline": true
-          }
-        ]
+        {
+          name: 'Ultima Guild: ',
+          value: this.lastGuild,
+          inline: true
+        },
+        {
+          name: 'Maior Set (specado): ',
+          value: this.sets,
+          inline: true
+        },
+        {
+          name: 'Maior Arma (specado): ',
+          value: this.weapon,
+          inline: true
+        }
+      ]
     }]
   })
 })

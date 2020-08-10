@@ -12,7 +12,7 @@ module.exports = async (data) => {
 
   if (!userDiscord) {
     await Discord.create(payload)
-    return 
+    return
   }
 
   await Discord.updateOne({ discordId: data.discordId }, {

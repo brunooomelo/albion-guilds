@@ -128,33 +128,30 @@ const data = `"Data"	"Jogador"	"Motivo"	"Quantidade"
 "2020-07-08 01:43:04"	"waterwhat"	"Depósito"	"200000"
 "2020-07-08 00:01:19"	"BaleiaGorda"	"Saque"	"-2500000"
 "2020-07-07 21:50:17"	"lasmoregolas"	"Depósito"	"200000"
-` 
-
+`
 
 Promise
-.resolve(data).then((x) => {
-  return x
-    .split('\n')
-    .map((y, index) => {
-      if (index === 0) {
-        return 
-      }
-      const dados = y.split('\t')
-      if(dados.length !== 4) {
-        return
-      }
-      const dadosFormatados = dados.map((dd) => {
-        return dd.replace(/\"/g, '')
+  .resolve(data).then((x) => {
+    return x
+      .split('\n')
+      .map((y, index) => {
+        if (index === 0) {
+          return
+        }
+        const dados = y.split('\t')
+        if (dados.length !== 4) {
+          return
+        }
+        const dadosFormatados = dados.map((dd) => {
+          return dd.replace(/\"/g, '')
+        })
+        return {
+          timestamp: dadosFormatados[0],
+          nickName: dadosFormatados[1],
+          action: dadosFormatados[2],
+          value: dadosFormatados[3]
+        }
       })
-      return {
-        timestamp: dadosFormatados[0],
-        nickName: dadosFormatados[1],
-        action: dadosFormatados[2],
-        value: dadosFormatados[3]
-      }
-    })
-    .filter(d => (d))
-
-})
-.then(console.log)
-
+      .filter(d => (d))
+  })
+  .then(console.log)

@@ -1,7 +1,7 @@
 const categories = {
-	USER: 'users',
-	MOD: 'mods',
-	ADM: 'admins',
-};
+  USER: 'users',
+  MOD: 'mods',
+  ADM: 'admins'
+}
 
-module.exports = categories;
+module.exports = categories

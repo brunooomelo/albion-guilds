@@ -47,23 +47,23 @@ const guildSchema = new mongoose.Schema({
     roles: {
       main: {
         type: String,
-        default: '' 
+        default: ''
       },
       permission: {
         type: String,
-        default: '' 
+        default: ''
       },
       dps: {
         type: String,
-        default: '' 
+        default: ''
       },
       healer: {
         type: String,
-        default: '' 
+        default: ''
       },
       support: {
         type: String,
-        default: '' 
+        default: ''
       },
       tank: {
         type: String,
@@ -71,18 +71,18 @@ const guildSchema = new mongoose.Schema({
       },
       collector: {
         type: String,
-        default: '' 
+        default: ''
       },
       apresentou: {
         type: String,
-        default: '' 
-      },
+        default: ''
+      }
     },
     voices: {
       afk: {
         type: String,
-        default: '' 
-      },
+        default: ''
+      }
     },
     webhookId: {
       type: String,
@@ -91,7 +91,7 @@ const guildSchema = new mongoose.Schema({
     webhookToken: {
       type: String,
       default: ''
-    },
+    }
   }
 }, {
   timestamps: {
