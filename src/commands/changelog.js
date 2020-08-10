@@ -1,10 +1,12 @@
 const Discord = require('discord.js');
 const categories = require('../userCategory');
 const { format } = require('date-fns');
-const { verifyPermission } = require('../util/index');
+const { verifyPermission } = require('../util');
+const { cached } = require('../util/cache') 
 
 module.exports = {
 	async run(client, message, args) {
+		const { environment } = cached.get(message.guild.id)
 		if (!verifyPermission(message.member.roles, message.guild.id)) {
 			return message.reply(
 				'Você não tem permissão para usar esse comando'
@@ -15,7 +17,7 @@ module.exports = {
 		const logs = new Discord.RichEmbed()
 			.addField(`:white_small_square: **${format(ts, 'dd/MM/yyyy', { timeZone: 'America/Sao_Paulo'})}** **${format(ts, 'HH:mm', { timeZone: 'America/Sao_Paulo' })}**`, `${texto}`)
 			.setColor('#ffffff');
-		return client.channels.get(process.env.CHANGELOG_CHAT).send(logs);
+		return client.channels.get(environment.chats.changelog).send(logs);
 	},
 
 	get command() {

@@ -1,5 +1,6 @@
 const categories = require('../userCategory');
 const { verifyPermission } = require('../util')
+
 module.exports = {
 	validate(client, message) {
 		if (!verifyPermission(message.member.roles, message.guild.id)) {

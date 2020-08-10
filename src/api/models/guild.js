@@ -19,6 +19,10 @@ const guildSchema = new mongoose.Schema({
       default: ''
     },
     chats: {
+      feedbacks: {
+        type: String,
+        default: ''
+      },
       rules: {
         type: String,
         default: ''
@@ -37,6 +41,10 @@ const guildSchema = new mongoose.Schema({
       }
     },
     roles: {
+      main: {
+        type: String,
+        default: '' 
+      },
       permission: {
         type: String,
         default: '' 
@@ -62,6 +70,12 @@ const guildSchema = new mongoose.Schema({
         default: '' 
       },
       apresentou: {
+        type: String,
+        default: '' 
+      },
+    },
+    voices: {
+      afk: {
         type: String,
         default: '' 
       },

@@ -1,12 +1,15 @@
-const categories = require('../userCategory');
+const categories = require('../userCategory')
+const { verifyPermission } = require('../util')
+const { cached } = require('../util/cache');
 
 module.exports = {
 	validate(client, message) {
-		if (!message.member.hasPermission('MANAGE_GUILD')) {
+		if (!verifyPermission(message.member.roles, message.guild.id)) {
 			throw new Error('no_permission');
 		}
 	},
 	async run(client, message, args) {
+		const { environment } = cached.get(message.guild.id)
 		const channel = client.guilds.get(message.guild.id).channels.find((cn) => {
 			return (cn.id === args[0])
 		})
@@ -23,7 +26,7 @@ module.exports = {
 		}
 
 		const allmembers = client.guilds.get(message.guild.id).members.filter(m => {
-			return m.voiceChannelID && !m.user.bot && m.voiceChannelID !== process.env.AFK && m.voiceChannelID !== channel.id && hasRole(mentions, m)
+			return m.voiceChannelID && !m.user.bot && m.voiceChannelID !== environment.voices.afk && m.voiceChannelID !== channel.id && hasRole(mentions, m)
 		})
 
 		await Promise.all(allmembers.map((am) => {
@@ -39,7 +42,7 @@ module.exports = {
 			name: 'move-all',
 			category: categories.ADM,
 			description: 'Manda mensagem pra todos os usuários',
-			usage: 'move-all <CHANNEL> ...<MENTIONS>',
+			usage: 'move-all <MENTION_ROLE>',
 		};
 	},
 };

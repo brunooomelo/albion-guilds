@@ -1,10 +1,11 @@
 const Discord = require('discord.js');
 const categories = require('../userCategory');
-const util = require('../util');
+const { verifyPermission, getYear } = require('../util');
+const { cached } = require('../util/cache')
 
 module.exports = {
 	validate(client, message, args) {
-		if (!message.member.hasPermission('BAN_MEMBERS')) {
+		if (!verifyPermission(message.member.roles, message.guild.id)) {
 			throw new Error('no_permission');
 		}
 		const member = message.mentions.members.first();
@@ -13,6 +14,7 @@ module.exports = {
 		}
 	},
 	async run(client, message, args) {
+		const { environment } = cached.get(message.guild.id)
 		const member = message.mentions.members.first();
 		const reason = args.slice(1).join(' ');
 
@@ -25,7 +27,7 @@ module.exports = {
 			.setThumbnail(member.user.avatarURL)
 			.setColor('#8146DC')
       .setFooter(
-				util.getYear() + ' © PvP School'
+				getYear() + `© ${message.guild.name}`
 			)
 			.setTimestamp();
 
@@ -34,7 +36,7 @@ module.exports = {
       .then(msg => msg.delete(8000));
       
 		member.send('Você foi punido, mais informações abaixo.', embedPunish);
-		client.channels.get(process.env.PUNISHMENTS_CHAT).send(embedPunish);
+		client.channels.get(environment.chats.punishments).send(embedPunish);
 	},
 
 	get command() {

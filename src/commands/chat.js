@@ -1,5 +1,6 @@
 const categories = require('../userCategory');
 const { verifyPermission } = require('../util')
+const { cached } = require('../util/cache') 
 
 module.exports = {
 	async validate(client, message, [state]) {
@@ -11,11 +12,12 @@ module.exports = {
 		}
 	},
 	async run(client, message, [state]) {
+		const { environment } = cached.get(message.guild.id)
 		const SEND_MESSAGES = state === 'on';
 		await message.channel.overwritePermissions(
 			client.guilds
 				.get(message.guild.id)
-				.roles.find('id', process.env.APRESENTOU),
+				.roles.find('id', environment.roles.main),
 			{ SEND_MESSAGES }
 		);
 		if (SEND_MESSAGES) {

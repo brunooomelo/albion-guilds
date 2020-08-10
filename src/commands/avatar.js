@@ -5,6 +5,7 @@ module.exports = {
 	async run(client, message) {
 		const member = message.mentions.users.first() || message.author;
 		const answer = translate('avatar.answer');
+		answer.title = `Avatar`
 		answer.setImage(member.avatarURL);
 		await message.channel.send(answer);
 	},

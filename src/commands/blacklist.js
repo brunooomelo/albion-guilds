@@ -1,10 +1,11 @@
 const Discord = require('discord.js');
 const categories = require('../userCategory');
 const util = require('../util');
+const { cached } = require('../util/cache')
 
 module.exports = {
 	validate(client, message, args) {
-		if (!message.member.hasPermission('BAN_MEMBERS')) {
+		if (!util.verifyPermission(message.member.roles, message.guild.id)) {
 			throw new Error('no_permission');
 		}
 		if (args.length < 2) {
@@ -12,7 +13,7 @@ module.exports = {
 		}
 	},
 	async run(client, message, args) {
-		const member = args[0];
+		const member = message.mentions.users.first() || args[0];
 		const reason = args.slice(1).join(' ');
 
 		const embedPunish = new Discord.RichEmbed()
@@ -24,16 +25,20 @@ module.exports = {
 			.setThumbnail()
 			.setColor('#8146DC')
 			.setFooter(
-				util.getYear() + ' © PvP School',
+				util.getYear() + `© ${message.guild.name}`,
 			)
 			.setTimestamp();
 
 		message.channel
 			.send('``✅`` Player adicionado na BlackList')
 			.then(msg => msg.delete(8000));
+			const { environment } = cached.get(message.guild.id)
 
-		// member.send('Você foi punido, mais informações abaixo.', embedPunish);
-		client.channels.get(process.env.BLACKLIST_CHAT).send(embedPunish);
+			client.channels.get(environment.chats.blacklist).send(embedPunish)
+			member.send('Você foi punido, mais informações abaixo.', embedPunish).catch((error) => {
+				console.log('Este ')
+				return error
+			})
 
 		// await member.ban(
 		// 	`Motivo: ${reason} | Punido por: ${message.author.tag}`
