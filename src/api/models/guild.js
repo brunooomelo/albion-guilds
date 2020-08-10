@@ -14,6 +14,10 @@ const guildSchema = new mongoose.Schema({
     default: false
   },
   environment: {
+    welcomeMessage: {
+      type: String,
+      default: ''
+    },
     prefix: {
       type: String,
       default: ''
