@@ -168,15 +168,15 @@ module.exports = {
       sets: collectors.set.collected.first().content,
       horario: collectors.horario.collected.first().content,
       friend: collectors.friend.collected.first().content
-    })
-    console.log(`[#LOG] create player :: ${message.author.id}`)
+    }).catch((err) => console.log(err))
+    console.log(`[#LOG] create player :: ${message.author.id} in ${guild.guildName}`)
 
     register.delete(message.author.id)
     await client.guilds
       .get(guild.guildId)
       .members
       .get(message.author.id)
-      .addRole(process.env.APRESENTOU)
+      .addRole(guild.environment.roles.apresentou)
   },
   async fail (err, client, message) {
     if (err.message === 'cooldown') {

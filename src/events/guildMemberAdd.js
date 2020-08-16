@@ -6,7 +6,7 @@ module.exports = async (client, member) => {
   try {
     member.send(environment.welcomeMessage)
     await createDiscord(member.user)
-    console.log(`[#LOG] usuario entrou no servidor: ${member.user.username}`)
+    console.log(`[#LOG] usuario : ${member.user.username} entrou no servidor ${member.guild.name}`)
   } catch (error) {
     console.log(error.message)
     return error
