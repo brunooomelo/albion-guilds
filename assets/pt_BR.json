@@ -24,6 +24,9 @@
 		"english": {
 			"title": "> **Qual seu nivel de Inglês?**"
 		},
+		"friend": {
+			"title": "> **Indico por alguem da guild?**"
+		},
 		"horario": {
 			"title": "> **Horário disponível**"	
 		},

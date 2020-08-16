@@ -1,6 +1,6 @@
 const Discord = require('discord.js')
 const categories = require('../userCategory')
-const { cached } = require('../util/cache')
+const { cached, register } = require('../util/cache')
 
 module.exports = {
   validate (client, message) {
@@ -16,6 +16,7 @@ module.exports = {
     }
   },
   run (client, message) {
+    register.set(message.author.id, message.guild.id)
     message.channel
       .send('``❕`` Todas as informações foram enviadas em seu privado.')
       .then(msg => msg.delete(8000))

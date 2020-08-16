@@ -1,7 +1,9 @@
 const mongoose = require('mongoose')
 const { searchFame, searchPlayer } = require('../config/albion')
-const webhook = require('../config/webhook')
+const { WebhookClient } = require('discord.js')
 const Discord = require('../models/user')
+const { cached } = require('../../util/cache')
+const { transform } = require('../../util')
 
 const playerScheme = new mongoose.Schema({
   name: {
@@ -33,6 +35,10 @@ const playerScheme = new mongoose.Schema({
     type: String,
     default: ''
   },
+  friend: {
+    type: String,
+    default: ''
+  },
   discord: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user_discords'
@@ -57,6 +63,8 @@ playerScheme.pre('save', async function () {
 
 playerScheme.post('save', async function () {
   const discord = await Discord.findById(this.discord)
+  const { environment } = cached.get(discord.discordId)
+  const webhook = new WebhookClient(environment.webhookId, environment.webhookToken)
   webhook.send({
     embeds: [{
       color: 8311585,
@@ -67,15 +75,16 @@ playerScheme.post('save', async function () {
       author: {
         name: `<@${discord.discordId}>`
       },
+      title: `Registro para a ${discord.guildName}`,
       fields: [
         {
           name: 'Personagem: ',
-          value: this.name,
+          value: `:crossed_swords: ${this.name} :crossed_swords:`,
           inline: true
         },
         {
           name: 'TotalFame: ',
-          value: this.totalFame,
+          value: transform(this.totalFame),
           inline: false
         },
         {
@@ -91,7 +100,12 @@ playerScheme.post('save', async function () {
         {
           name: 'Maior Arma (specado): ',
           value: this.weapon,
-          inline: true
+          inline: false
+        },
+        {
+          name: 'Horario Disponivel: ',
+          value: this.hours,
+          inline: false
         }
       ]
     }]

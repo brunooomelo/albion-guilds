@@ -5,21 +5,21 @@ const roles = require('../../assets/roles.js')
 const categories = require('../userCategory')
 const langPTBR = require('../../assets/pt_BR')
 const createPlayer = require('../api/services/createPlayer')
+const { cached, register } = require('../util/cache')
 
 const TIMEOUT = 60 * 2000
 
-const RolesCategory = roles.categories_roles.map(cr => cr.id)
-const RolesEng = roles.eng_roles.map(en => en.id)
+// const RolesEng = roles.eng_roles.map(en => en.id)
 
-const englishDescription = roles.eng_roles
-  .map(engRole => `${engRole.react}  -  ${engRole.name}`)
-  .join('\n')
+// const englishDescription = roles.eng_roles
+//   .map(engRole => `${engRole.react}  -  ${engRole.name}`)
+//   .join('\n')
 
-const categoryDescriptionLines = roles.categories_roles
+const categoryDescriptionLines = (guild) => roles(guild).categories_roles
   .map(devRole => `${devRole.react}  -  ${devRole.name}`)
   .join('\n')
 
-const categoryDescription = `${categoryDescriptionLines}\n\n\n✅ - Pronto.`
+const categoryDescription = (guild) => `${categoryDescriptionLines(guild)}\n\n\n✅ - Pronto.`
 
 const isAuthor = (message, author) => message.author.id === author.id
 const collect = promisify((collector, cb) => {
@@ -45,10 +45,8 @@ const collectMessage = message => {
   return collect(collector).then(() => collector)
 }
 
-const sendCategoryMessage = async author => {
-  const message = await author.send(
-		`${langPTBR.continuar.funcao.title}\n\n${categoryDescription}`
-  )
+const sendCategoryMessage = async (author, guild) => {
+  const message = await author.send(`${langPTBR.continuar.funcao.title}\n\n${categoryDescription(guild)}`)
   await message.react('1⃣')
   await message.react('2⃣')
   await message.react('3⃣')
@@ -63,99 +61,62 @@ const collectCategoryReactions = async ({
   client,
   categoriesRoles
 }) => {
+  const guild = cached.get(register.get(author.id))
   const collector = message.createReactionCollector(
     (reaction, user) => isAuthor({ author }, user),
     { time: TIMEOUT }
   )
-  collector.on('collect', async reaction => {
+  collector.on('collect', async (reaction, reactionCollector) => {
     if (reaction.emoji.name === '✅') {
+      await Promise.all(reactionCollector.collected.map(async (r) => {
+        const emoji = r.emoji.name
+        const selectedRole = categoriesRoles.find(role => role.emoji === emoji)
+        if (!selectedRole) {
+          return
+        }
+
+        return client.guilds
+          .get(guild.guildId)
+          .members.get(author.id)
+          .addRole(selectedRole.id)
+          .then(() => author.send('``✅`` TAG ' + `**${selectedRole.name}**` + ' adicionada com sucesso!'))
+      }))
       collector.stop()
-      return
     }
-
-    console.log(reaction)
-
-    // const emoji = reaction.emoji.name;
-    // const selectedRole = categoriesRoles.find(role => role.emoji === emoji);
-    // if (!selectedRole) {
-    // 	return;
-    // }
-
-    // await client.guilds
-    // 	.get(message.guild.id)
-    // 	.members.get(author.id)
-    // 	.addRole(selectedRole.id)
-    // 	.then(() => author.send('``✅`` TAG '+ `**${selectedRole.name}**`  +' adicionada com sucesso!'))
   })
   return collect(collector).then(() => collector)
 }
 
-const sendEnglishMessage = async author => {
-  const message = await author.send(
-		`${langPTBR.continuar.english.title}\n\n${englishDescription}`
-  )
-
-  await	message.react('🇦'),
-  await	message.react('🇧'),
-  await	message.react('🇨')
-
-  return message
-}
-const collectEnglishReactions = async ({
-  author,
-  message, // message with english reactions
-  client,
-  engRoles
-}) => {
-  const collector = message.createReactionCollector(
-    (reaction, user) => isAuthor({ author }, user),
-    { time: TIMEOUT }
-  )
-  collector.on('collect', async reaction => {
-    const emoji = reaction.emoji.name
-    const engRole = engRoles.find(role => role.react === emoji)
-    if (!engRole) {
-      return
-    }
-    await client.guilds
-      .get(message.guild.id)
-      .members.get(author.id)
-      .addRole(engRole.id)
-    collector.stop()
-  })
-  return collect(collector).then(() => collector)
-}
 const cooldown = {}
 module.exports = {
+  validate: async (client, message) => {
+    if (!register.has(message.author.id)) {
+      throw new Error('start_register')
+    }
+  },
   run: async (client, message) => {
+    const guild = cached.get(register.get(message.author.id))
     if (cooldown[message.author.id]) {
       throw new Error('cooldown')
     }
     cooldown[message.author.id] = true
-    const categoriesRoles = roles.categories_roles
-    const engRoles = roles.eng_roles
+    console.log('guild', guild.environment)
+    const categoriesRoles = roles(guild.environment).categories_roles
+    console.log('category guild', categoriesRoles)
     const collectors = {}
 
     const presentedRole = client.guilds
-      .get(process.env.GUILD_ID)
-      .roles.get(process.env.APRESENTOU)
+      .get(guild.guildId)
+      .roles.get(guild.environment.roles.apresentou)
 
     if (
       client.guilds
-        .get(process.env.GUILD_ID)
+        .get(guild.guildId)
         .members.get(message.author.id)
         .roles.some(role => role.name === presentedRole.name)
     ) {
       throw new Error('registered')
     }
-
-    const categoryMessage = await sendCategoryMessage(message.author)
-    await collectCategoryReactions({
-      client,
-      author: message.author,
-      message: categoryMessage,
-      categoriesRoles
-    })
 
     await message.author.send(langPTBR.continuar.name.title)
     collectors.name = await collectMessage(message)
@@ -178,24 +139,27 @@ module.exports = {
     await message.author.send(langPTBR.continuar.set.title)
     collectors.set = await collectMessage(message)
 
+    await message.author.send(langPTBR.continuar.friend.title)
+    collectors.friend = await collectMessage(message)
+
     await message.author.send(langPTBR.continuar.horario.title)
     collectors.horario = await collectMessage(message)
 
-    // const categoryMessage = await sendCategoryMessage(message.author);
-    // await collectCategoryReactions({
-    // 	client,
-    // 	author: message.author,
-    // 	message: categoryMessage,
-    // 	categoriesRoles,
-    // });
+    const categoryMessage = await sendCategoryMessage(message.author, guild.environment)
+    await collectCategoryReactions({
+      client,
+      author: message.author,
+      message: categoryMessage,
+      categoriesRoles
+    })
 
     createPlayer({
       discord: {
         id: message.author.id,
         discriminator: message.author.discriminator,
-        username: message.author.username
+        username: message.author.username,
+        guild: message.guild.id
       },
-      guild: message.guild.id,
       name: collectors.name.collected.first().content,
       nick: collectors.nick.collected.first().content,
       age: collectors.age.collected.first().content,
@@ -203,9 +167,11 @@ module.exports = {
       guild: collectors.guild.collected.first().content,
       weapon: collectors.weapon.collected.first().content,
       sets: collectors.set.collected.first().content,
-      horario: collectors.horario.collected.first().content
+      horario: collectors.horario.collected.first().content,
+      friend: collectors.friend.collected.first().content
     })
 
+    register.delete(message.author.id)
     await client.guilds
       .get(message.guild.id)
       .members
@@ -237,11 +203,20 @@ module.exports = {
         .send('``❌`` Você já se apresentou.')
         .then(msg => msg.delete(8000))
     }
+    if (err.message === 'start_register') {
+      const timeout = new Discord.RichEmbed()
+        .setTitle('``❌`` Você precisa usar o !apresentar')
+        .setDescription(
+          'Utilize `!apresentar` para começar sua apresentação.'
+        )
+        .setColor('#36393E')
+      return message.author.send(timeout)
+    }
     if (err.message === 'time') {
       const timeout = new Discord.RichEmbed()
         .setTitle('``❌`` **Tempo limite de resposta excedido.**')
         .setDescription(
-          'Utilize `!registrar` para terminar sua apresentação.'
+          'Utilize `!registrar` para recomeçar sua apresentação.'
         )
         .setColor('#36393E')
       return message.author.send(timeout)

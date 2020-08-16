@@ -1,8 +1,10 @@
 const cache = new Map()
 const guildModel = require('../api/models/guild')
+const register = new Map()
 
 module.exports = {
   cached: cache,
+  register,
   set: async (guildId) => {
     if (!cache.get(guildId)) {
       const gd = await guildModel.findOne({ guildId })
