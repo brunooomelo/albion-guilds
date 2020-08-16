@@ -169,7 +169,7 @@ module.exports = {
       horario: collectors.horario.collected.first().content,
       friend: collectors.friend.collected.first().content
     })
-    console.log('\ncreate player')
+    console.log(`[#LOG] create player :: ${message.author.id}`)
 
     register.delete(message.author.id)
     await client.guilds
