@@ -7,7 +7,7 @@ const langPTBR = require('../../assets/pt_BR')
 const createPlayer = require('../api/services/createPlayer')
 const { cached, register } = require('../util/cache')
 
-const TIMEOUT = 60 * 2000
+const TIMEOUT = 60 * 1000
 
 // const RolesEng = roles.eng_roles.map(en => en.id)
 
@@ -81,6 +81,7 @@ const collectCategoryReactions = async ({
           .addRole(selectedRole.id)
           .then(() => author.send('``✅`` TAG ' + `**${selectedRole.name}**` + ' adicionada com sucesso!'))
       }))
+      author.send('``✅`` todas as tags adicionadas com sucesso!')
       collector.stop()
     }
   })
@@ -100,9 +101,7 @@ module.exports = {
       throw new Error('cooldown')
     }
     cooldown[message.author.id] = true
-    console.log('guild', guild.environment)
     const categoriesRoles = roles(guild.environment).categories_roles
-    console.log('category guild', categoriesRoles)
     const collectors = {}
 
     const presentedRole = client.guilds
@@ -139,12 +138,6 @@ module.exports = {
     await message.author.send(langPTBR.continuar.set.title)
     collectors.set = await collectMessage(message)
 
-    await message.author.send(langPTBR.continuar.friend.title)
-    collectors.friend = await collectMessage(message)
-
-    await message.author.send(langPTBR.continuar.horario.title)
-    collectors.horario = await collectMessage(message)
-
     const categoryMessage = await sendCategoryMessage(message.author, guild.environment)
     await collectCategoryReactions({
       client,
@@ -152,6 +145,12 @@ module.exports = {
       message: categoryMessage,
       categoriesRoles
     })
+
+    await message.author.send(langPTBR.continuar.friend.title)
+    collectors.friend = await collectMessage(message)
+
+    await message.author.send(langPTBR.continuar.horario.title)
+    collectors.horario = await collectMessage(message)
 
     createPlayer({
       discord: {
@@ -170,10 +169,11 @@ module.exports = {
       horario: collectors.horario.collected.first().content,
       friend: collectors.friend.collected.first().content
     })
+    console.log('\ncreate player')
 
     register.delete(message.author.id)
     await client.guilds
-      .get(message.guild.id)
+      .get(guild.guildId)
       .members
       .get(message.author.id)
       .addRole(process.env.APRESENTOU)
@@ -207,7 +207,7 @@ module.exports = {
       const timeout = new Discord.RichEmbed()
         .setTitle('``❌`` Você precisa usar o !apresentar')
         .setDescription(
-          'Utilize `!apresentar` para começar sua apresentação.'
+          'Utilize `!apresentar` no `chat de comando` para começar sua apresentação'
         )
         .setColor('#36393E')
       return message.author.send(timeout)

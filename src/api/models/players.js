@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const { searchFame, searchPlayer } = require('../config/albion')
 const { WebhookClient } = require('discord.js')
 const Discord = require('../models/user')
+const Guild = require('../models/guild')
 const { cached } = require('../../util/cache')
 const { transform } = require('../../util')
 
@@ -63,7 +64,8 @@ playerScheme.pre('save', async function () {
 
 playerScheme.post('save', async function () {
   const discord = await Discord.findById(this.discord)
-  const { environment } = cached.get(discord.discordId)
+  const guilda = await Guild.findById(this.guild)
+  const { environment } = cached.get(guilda.guildId)
   const webhook = new WebhookClient(environment.webhookId, environment.webhookToken)
   webhook.send({
     embeds: [{
@@ -72,11 +74,13 @@ playerScheme.post('save', async function () {
       footer: {
         text: 'Data de entrada'
       },
-      author: {
-        name: `<@${discord.discordId}>`
-      },
-      title: `Registro para a ${discord.guildName}`,
+      title: `Registro para a ${guilda.guildName}`,
       fields: [
+        {
+          name: 'Autor: ',
+          value: `:man_detective: <@${discord.discordId}>`,
+          inline: true
+        },
         {
           name: 'Personagem: ',
           value: `:crossed_swords: ${this.name} :crossed_swords:`,
