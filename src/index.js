@@ -44,9 +44,9 @@ const init = async () => {
 }
 
 database()
-  .then(() => console.log('database connection success'))
+  .then(() => console.log('[#LOG] database connection :: SUCCESS'))
   .then(initialize)
   .then(init)
-  .catch((error) => console.log('database deu erro', error.message))
+  .catch((error) => console.log('[#LOG] database connection :: ERROR', error.message))
 
 module.exports = client.commands

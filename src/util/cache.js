@@ -16,7 +16,7 @@ class Cache {
     })
 
     this.redis.on('ready', () => {
-      console.log('[#LOG] :: REDIS READY')
+      console.log('[#LOG] REDIS READY')
       this.status = true
     })
     this.redis.on('error', () => {
@@ -26,11 +26,11 @@ class Cache {
       this.status = false
     })
     this.redis.on('reconnecting', () => {
-      console.log('[#LOG] :: REDIS RECONNECTING')
+      console.log('[#LOG] REDIS RECONNECTING')
       this.status = false
     })
     this.redis.on('end', () => {
-      console.log('[#LOG] :: REDIS END')
+      console.log('[#LOG] REDIS END')
       this.status = false
     })
   }
