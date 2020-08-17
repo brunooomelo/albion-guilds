@@ -6,7 +6,7 @@ const Guild = require('../models/guild')
 const createPlayer = async (payload) => {
   try {
     const discordId = await UserDiscord.findOne({ discordId: payload.discord.id })
-    const guild = await Guild.findOne({ guildId: payload.discord.guild })
+    const guild = await Guild.findOne({ guildId: payload.discord.guild }).lean()
     const player = await Player.findOne({ name: { $regex: payload.nick, $options: 'i' }, guild: guild._id })
     const hasGuild = guild ? guild._id : null
     let _discordId = null

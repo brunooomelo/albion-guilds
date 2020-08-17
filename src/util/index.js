@@ -4,7 +4,7 @@ const Discord = require('discord.js')
 const { cached } = require('./cache')
 
 module.exports = {
-  isCommand: (message, prefix) =>
+  isCommand: (message, prefix = '!') =>
     message.content.startsWith(prefix),
   translate: (path, fields = [], templates) => {
     let data = _.cloneDeep(_.get(langPTBR, path))

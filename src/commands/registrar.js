@@ -153,7 +153,7 @@ module.exports = {
     collectors.horario = await collectMessage(message)
 
     console.log(`[#LOG] create player :: ${message.author.id} in ${guild.guildName}`)
-    await createPlayer({
+    const payload = {
       discord: {
         id: message.author.id,
         discriminator: message.author.discriminator,
@@ -169,7 +169,8 @@ module.exports = {
       sets: collectors.set.collected.first().content,
       horario: collectors.horario.collected.first().content,
       friend: collectors.friend.collected.first().content
-    })
+    }
+    await createPlayer(payload)
 
     register.delete(message.author.id)
     await client.guilds
