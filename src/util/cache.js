@@ -8,6 +8,8 @@ class Cache {
     this.redis = new Redis({
       host: process.env.REDIS_HOST || 'localhost',
       port: process.env.REDIS_PORT || 6379,
+      password: process.env.REDIS_PASSWORD || '',
+      user: process.env.REDIS_USERNAME || '',
       keyPrefix: 'cache:',
       retryStrategy (times) {
         const delay = Math.min(times * 1000, 10000)
