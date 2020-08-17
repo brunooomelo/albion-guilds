@@ -158,7 +158,7 @@ module.exports = {
         id: message.author.id,
         discriminator: message.author.discriminator,
         username: message.author.username,
-        guild: message.guild.id
+        guild: register.get(message.author.id)
       },
       name: collectors.name.collected.first().content,
       nick: collectors.nick.collected.first().content,
@@ -222,6 +222,7 @@ module.exports = {
         .setColor('#36393E')
       return message.author.send(timeout)
     }
+    console.log(err)
     return null
   },
   async success (client, message, args) {
