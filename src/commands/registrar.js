@@ -68,11 +68,11 @@ const collectCategoryReactions = async ({
   )
   collector.on('collect', async (reaction, reactionCollector) => {
     if (reaction.emoji.name === '✅') {
-      await Promise.all(reactionCollector.collected.map(async (r) => {
+      await Promise.all(reactionCollector.collected.map((r) => {
         const emoji = r.emoji.name
         const selectedRole = categoriesRoles.find(role => role.emoji === emoji)
         if (!selectedRole) {
-          return
+          return Promise.resolve()
         }
 
         return client.guilds
@@ -152,6 +152,7 @@ module.exports = {
     await message.author.send(langPTBR.continuar.horario.title)
     collectors.horario = await collectMessage(message)
 
+    console.log(`[#LOG] create player :: ${message.author.id} in ${guild.guildName}`)
     await createPlayer({
       discord: {
         id: message.author.id,
@@ -168,8 +169,7 @@ module.exports = {
       sets: collectors.set.collected.first().content,
       horario: collectors.horario.collected.first().content,
       friend: collectors.friend.collected.first().content
-    }).catch((err) => console.log(err))
-    console.log(`[#LOG] create player :: ${message.author.id} in ${guild.guildName}`)
+    })
 
     register.delete(message.author.id)
     await client.guilds
