@@ -9,7 +9,7 @@ module.exports = {
     }
   },
   async run (client, message) {
-    const { environment } = cached.get(message.guild.id)
+    const { environment } = await cached.getConfig(message.guild.id)
     const user = client.guilds.get(message.guild.id).members.get(message.author.id)
     const channel = client.guilds.get(message.guild.id).channels.find((cn) => (cn.id === user.voiceChannelID))
 

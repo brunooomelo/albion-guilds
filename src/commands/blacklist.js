@@ -32,7 +32,7 @@ module.exports = {
     message.channel
       .send('``✅`` Player adicionado na BlackList')
       .then(msg => msg.delete(8000))
-    const { environment } = cached.get(message.guild.id)
+    const { environment } = await cached.getConfig(message.guild.id)
 
     client.channels.get(environment.chats.blacklist).send(embedPunish)
     member.send('Você foi punido, mais informações abaixo.', embedPunish).catch((error) => {

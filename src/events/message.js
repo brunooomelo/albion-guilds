@@ -3,7 +3,7 @@ const { cached } = require('../util/cache')
 
 const runCommand = async (client, message) => {
   if (message.channel.type !== 'dm') {
-    const { environment } = cached.get(message.guild.id)
+    const { environment } = await cached.getConfig(message.guild.id)
     if (
       message.channel.id === environment.chats.feedbacks
     ) {

@@ -2,7 +2,7 @@ const createDiscord = require('../api/services/createDiscord')
 const { cached } = require('../util/cache')
 
 module.exports = async (client, member) => {
-  const { environment } = cached.get(member.guild.id)
+  const { environment } = await cached.getConfig(member.guild.id)
   try {
     member.send(environment.welcomeMessage)
     await createDiscord(member.user)

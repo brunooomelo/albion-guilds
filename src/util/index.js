@@ -33,8 +33,8 @@ module.exports = {
   getYear: () => {
     return new Date().getFullYear()
   },
-  verifyPermission: (permission, guildId) => {
-    const { environment } = cached.get(guildId)
+  verifyPermission: async (permission, guildId) => {
+    const { environment } = await cached.getConfig(guildId)
     return permission.get(environment.roles.permission)
   },
   transform: (labelValue) => {

@@ -12,7 +12,7 @@ module.exports = {
     }
   },
   async run (client, message, [state]) {
-    const { environment } = cached.get(message.guild.id)
+    const { environment } = await cached.getConfig(message.guild.id)
     const SEND_MESSAGES = state === 'on'
     await message.channel.overwritePermissions(
       client.guilds

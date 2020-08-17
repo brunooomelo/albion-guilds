@@ -65,7 +65,7 @@ playerScheme.pre('save', async function () {
 playerScheme.post('save', async function () {
   const discord = await Discord.findById(this.discord)
   const guilda = await Guild.findById(this.guild)
-  const { environment } = cached.get(guilda.guildId)
+  const { environment } = await cached.getConfig(guilda.guildId)
   const webhook = new WebhookClient(environment.webhookId, environment.webhookToken)
   webhook.send({
     embeds: [{

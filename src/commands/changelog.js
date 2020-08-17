@@ -6,7 +6,7 @@ const { cached } = require('../util/cache')
 
 module.exports = {
   async run (client, message, args) {
-    const { environment } = cached.get(message.guild.id)
+    const { environment } = await cached.getConfig(message.guild.id)
     if (!verifyPermission(message.member.roles, message.guild.id)) {
       return message.reply(
         'Você não tem permissão para usar esse comando'

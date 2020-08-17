@@ -9,7 +9,7 @@ module.exports = {
     }
   },
   async run (client, message, args) {
-    const { environment } = cached.get(message.guild.id)
+    const { environment } = await cached.getConfig(message.guild.id)
     const channel = client.guilds.get(message.guild.id).channels.find((cn) => {
       return (cn.id === args[0])
     })

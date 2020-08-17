@@ -61,7 +61,7 @@ const collectCategoryReactions = async ({
   client,
   categoriesRoles
 }) => {
-  const guild = cached.get(register.get(author.id))
+  const guild = await cached.getConfig(register.get(author.id))
   const collector = message.createReactionCollector(
     (reaction, user) => isAuthor({ author }, user),
     { time: TIMEOUT }
@@ -96,7 +96,7 @@ module.exports = {
     }
   },
   run: async (client, message) => {
-    const guild = cached.get(register.get(message.author.id))
+    const guild = await cached.getConfig(register.get(message.author.id))
     if (cooldown[message.author.id]) {
       throw new Error('cooldown')
     }
@@ -152,7 +152,7 @@ module.exports = {
     await message.author.send(langPTBR.continuar.horario.title)
     collectors.horario = await collectMessage(message)
 
-    createPlayer({
+    await createPlayer({
       discord: {
         id: message.author.id,
         discriminator: message.author.discriminator,

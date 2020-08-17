@@ -3,11 +3,12 @@ const categories = require('../userCategory')
 const { cached, register } = require('../util/cache')
 
 module.exports = {
-  validate (client, message) {
+  async validate (client, message) {
+    const { environment } = await cached.getConfig(message.guild.id)
     const presentedRole = client.guilds
       .get(message.guild.id)
       .roles
-      .get(cached.get(message.guild.id).environment.roles.apresentou)
+      .get(environment.roles.apresentou)
     if (message.channel.type === 'dm') {
       throw new Error('direct')
     }

@@ -14,7 +14,7 @@ module.exports = {
     }
   },
   async run (client, message, args) {
-    const { environment } = cached.get(message.guild.id)
+    const { environment } = await cached.getConfig(message.guild.id)
     const member = message.mentions.members.first()
     const reason = args.slice(1).join(' ')
 
