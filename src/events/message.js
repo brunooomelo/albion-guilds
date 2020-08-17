@@ -2,20 +2,22 @@ const util = require('../util')
 const { cached } = require('../util/cache')
 
 const runCommand = async (client, message) => {
+  const guild = await cached.getConfig(message.guild ? message.guild.id : '')
+  const prefix = guild ? guild.environment.prefix : '!'
+
   if (message.channel.type !== 'dm') {
-    const { environment } = await cached.getConfig(message.guild.id)
     if (
-      message.channel.id === environment.chats.feedbacks
+      message.channel.id === guild.environment.chats.feedbacks
     ) {
       await message.react('✅')
       await message.react('❌')
     }
   }
 
-  if (!util.isCommand(message)) return
+  if (!util.isCommand(message, prefix)) return
 
   const args = message.content
-    .slice(process.env.PREFIX.length)
+    .slice(prefix.length)
     .trim()
     .split(/ +/g)
   const command = args.shift().toLowerCase()

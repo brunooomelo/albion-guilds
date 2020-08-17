@@ -4,8 +4,8 @@ const Discord = require('discord.js')
 const { cached } = require('./cache')
 
 module.exports = {
-  isCommand: message =>
-    message.content.startsWith(process.env.PREFIX),
+  isCommand: (message, prefix) =>
+    message.content.startsWith(prefix),
   translate: (path, fields = [], templates) => {
     let data = _.cloneDeep(_.get(langPTBR, path))
     if (!data) {

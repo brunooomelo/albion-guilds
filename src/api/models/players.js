@@ -56,10 +56,16 @@ const playerScheme = new mongoose.Schema({
 })
 
 playerScheme.pre('save', async function () {
-  const player = await searchPlayer(this.name)
-  this.totalFame = await searchFame(player.albionId)
-  this.name = player.name
-  this.albionId = player.albionId
+  try {
+    console.log(`[#LOG] API ALBION :: searchPlayer: ${this.name}`)
+    const player = await searchPlayer(this.name)
+    console.log(`[#LOG] API ALBION :: searchFame: ${this.name}`)
+    this.totalFame = await searchFame(player.albionId)
+    this.name = player.name
+    this.albionId = player.albionId
+  } catch (err) {
+    console.log(err)
+  }
 })
 
 playerScheme.post('save', async function () {
@@ -109,6 +115,11 @@ playerScheme.post('save', async function () {
         {
           name: 'Horario Disponivel: ',
           value: this.hours,
+          inline: false
+        },
+        {
+          name: 'Indicado por: ',
+          value: this.friend,
           inline: false
         }
       ]
