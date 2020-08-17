@@ -19,6 +19,7 @@
     "enmap": "^5.3.1",
     "express": "^4.17.1",
     "fs-extra": "^9.0.1",
+    "ioredis": "^4.17.3",
     "lodash": "^4.17.19",
     "moment": "^2.27.0",
     "mongoose": "^5.9.25"
