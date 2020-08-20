@@ -45,5 +45,26 @@ module.exports = {
         : Math.abs(Number(labelValue)) >= 1.0e+3
           ? Math.abs(Number(labelValue)) / 1.0e+3 + 'K'
           : Math.abs(Number(labelValue))
-  }
+  },
+  sanitilize: (data) => data
+    .split('\n')
+    .map((y, index) => {
+      if (index === 0) {
+        return
+      }
+      const dados = y.split('\t')
+      if (dados.length !== 4) {
+        return
+      }
+      const dadosFormatados = dados.map((dd) => {
+        return dd.replace(/"/g, '')
+      })
+      return {
+        timestamp: dadosFormatados[0],
+        nickName: dadosFormatados[1],
+        action: dadosFormatados[2],
+        value: dadosFormatados[3]
+      }
+    })
+    .filter(d => (d))
 }

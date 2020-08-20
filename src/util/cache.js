@@ -73,10 +73,11 @@ module.exports = {
       cached.set(gd.guildId, guildId)
     }
   },
-  initialize: async () => {
+  initialize: async (conn) => {
     const guilds = await guildModel.find({ permission: true }).lean()
 
     await cached.setConfig('*', guilds)
     await Promise.all(guilds.map(gd => cached.setConfig(gd.guildId, gd)))
+    return conn
   }
 }

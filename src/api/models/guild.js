@@ -91,6 +91,14 @@ const guildSchema = new mongoose.Schema({
     webhookToken: {
       type: String,
       default: ''
+    },
+    taxValue: {
+      type: String,
+      value: ''
+    },
+    guildAlbionId: {
+      type: String,
+      value: ''
     }
   }
 }, {

@@ -1,20 +1,22 @@
 // const { searchMembers } = require('../api/config/albion')
 const database = require('../api/config/database')
 const { initialize, cached } = require('../util/cache')
-const { getWeek, isSunday, isThursday } = require('date-fns')
+const { isSunday } = require('date-fns')
+const createTax = require('../api/services/createTax')
 require('dotenv').config()
 
-async function init () {
-  console.log('init')
-  const allConfigs = await cached.getConfig('*')
-
-  console.log(new Date())
-  console.log(isSunday(new Date()))
-  console.log(allConfigs)
+async function init (conn) {
+  const allConfigs = (await cached.getConfig('*')).slice(0, 1)
+  await Promise.all(allConfigs.map(createTax))
+    .then(() => console.log('[#LOG] Job createad'))
+  return conn
 }
 
-database()
-  .then(() => console.log('[#LOG] database connection :: SUCCESS'))
-  .then(initialize)
-  .then(init)
-  .catch((error) => console.log('[#LOG] database connection :: ERROR', error.message))
+if (isSunday(new Date())) {
+  database()
+    .then(initialize)
+    .then(init)
+    .then((conn) => conn.connection.close())
+    .then(() => process.exit(0))
+    .catch((error) => console.log('[#LOG] database connection :: ERROR', error.message))
+}
