@@ -23,7 +23,17 @@ const searchPlayer = async (playerName) => {
   }
 }
 
+const searchMembers = async (guildId) => {
+  const { data } = await api.get(`/guilds/${guildId}/members`)
+
+  return data.map((p) => ({
+    idPlayer: p.Id,
+    name: p.Name
+  }))
+}
+
 module.exports = {
   searchFame,
-  searchPlayer
+  searchPlayer,
+  searchMembers
 }
